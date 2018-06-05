@@ -67,9 +67,8 @@ public class CsvReader {
                     } else if (file.getName().equalsIgnoreCase("team_skill.csv") && line.length > 1) {
                         TeamSkill teamSkill = new TeamSkill();
                         teamSkill.setSkill(line[1]);
-                        Team team = new Team();
-                        team.setTeamId(line[0]);
-                        teamSkill.setTeam(team);
+                        teamSkill.setTeamId(line[0]);
+                        teamSkill.setId();
                         teamSkillRepository.save(teamSkill);
                     } else if (file.getName().equalsIgnoreCase("task.csv") && line.length > 1) {
                         Task task = new Task();
@@ -82,15 +81,15 @@ public class CsvReader {
 
             } finally {
                 closeReader(reader);
-                file.delete();
 
                 teamRepository.findAll().forEach(team -> {
-                    teamSkillRepository.findAllByTeam(team).forEach(
+                    teamSkillRepository.findAllByTeamId(team.getTeamId()).forEach(
                             teamSkill -> {
                                 taskRepository.findAllBySkill(teamSkill.getSkill()).forEach(task -> {
                                     AssignmentResult assignmentResult = new AssignmentResult();
                                     assignmentResult.setTeamId(team.getTeamId());
                                     assignmentResult.setTaskAssigned(task.getTaskId());
+                                    assignmentResult.setId();
                                     assignmentResultRepository.save(assignmentResult);
                                 });
                             }
@@ -98,6 +97,7 @@ public class CsvReader {
                 });
             }
         });
+        file.delete();
     }
 
     public boolean isValidCsv(File file) {

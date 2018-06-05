@@ -2,7 +2,10 @@ package com.msms.tmtest.model;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Data
@@ -10,13 +13,15 @@ import javax.persistence.*;
 public class TeamSkill {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     String id;
 
     @Column(name = "skill")
     String skill;
 
-    @ManyToOne
-    @JoinColumn(name = "team_id")
-    Team team;
+    @Column(name = "team_id")
+    String teamId;
+
+    public void setId() {
+        this.id = skill + teamId;
+    }
 }

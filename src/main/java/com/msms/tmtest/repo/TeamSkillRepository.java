@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Set;
 
 public interface TeamSkillRepository extends CrudRepository<TeamSkill, String> {
-    Set<TeamSkill> findAllByTeam(Team team);
+    Set<TeamSkill> findAllByTeamId(String teamId);
 }
