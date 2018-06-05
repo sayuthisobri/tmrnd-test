@@ -4,6 +4,7 @@ import com.msms.tmtest.model.AssignmentResult;
 import com.msms.tmtest.model.Task;
 import com.msms.tmtest.model.Team;
 import com.msms.tmtest.model.TeamSkill;
+import com.msms.tmtest.repo.AssignmentResultRepository;
 import com.msms.tmtest.repo.TaskRepository;
 import com.msms.tmtest.repo.TeamRepository;
 import com.msms.tmtest.repo.TeamSkillRepository;
@@ -24,6 +25,8 @@ public class WebController {
     TeamRepository teamRepository;
     @Autowired
     TeamSkillRepository teamSkillRepository;
+    @Autowired
+    AssignmentResultRepository resultRepository;
 
     @RequestMapping("/")
     public String index() {
@@ -53,8 +56,9 @@ public class WebController {
 
     @RequestMapping("/assignment_result")
     public Object getResult() {
-        AssignmentResult assignmentResult = new AssignmentResult();
-        return assignmentResult;
+        List<AssignmentResult> results = new ArrayList<>();
+        resultRepository.findAll().forEach(results::add);
+        return results;
     }
 }
 
